@@ -17,7 +17,7 @@
         "psr-4": {"NDAP\\RestHelper\\": "src/"}
     },
 	"require": {
-        "php": "^8.0",
+        "php": "*",
         "ext-json": "*",
 		"ext-simplexml": "*",
 		"guzzlehttp/guzzle": "^7.0.1"
