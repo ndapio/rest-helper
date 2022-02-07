@@ -1,0 +1,1 @@
+A library that supports communication with REST API

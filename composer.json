@@ -1,0 +1,25 @@
+{
+    "name": "ndapio/rest-helper",
+    "type": "library",
+    "description": "A library that supports communication with REST API",
+    "keywords": ["rest","request","response","guzzle"],
+    "homepage": "https://ndap.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anh Phung",
+            "email": "anh@ndap.io",
+            "homepage": "http://ndap.io",
+            "role": "Developer"
+        }
+    ],
+	"autoload": {
+        "psr-4": {"NDAP\\RestHelper\\": "src/"}
+    },
+	"require": {
+        "php": "^8.0",
+        "ext-json": "*",
+		"ext-simplexml": "*"
+		"guzzlehttp/guzzle": "^7.0.1",
+    }
+}
