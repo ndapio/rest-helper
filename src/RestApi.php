@@ -2,8 +2,6 @@
 
 namespace NDAP\RestHelper;
 
-use App\RestHelper\RequestService;
-
 class RestApi {
 
     protected string $base_url;
