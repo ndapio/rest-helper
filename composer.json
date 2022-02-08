@@ -14,7 +14,7 @@
         }
     ],
 	"autoload": {
-        "psr-4": {"NDAP\\RestHelper\\": "src/"}
+        "psr-4": {"NDAPio\\RestHelper\\": "src/"}
     },
 	"require": {
         "php": "*",

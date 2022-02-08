@@ -1,5 +1,5 @@
 <?php
-namespace NDAP\RestHelper;
+namespace NDAPio\RestHelper;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;

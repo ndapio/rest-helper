@@ -1,6 +1,6 @@
 <?php
 
-use NDAP\RestHelper\RestApi;
+use NDAPio\RestHelper\RestApi;
 
 class SampleRestful extends RestApi {
 

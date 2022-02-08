@@ -1,6 +1,6 @@
 <?php
 
-namespace NDAP\RestHelper;
+namespace NDAPio\RestHelper;
 
 class RestApi {
 
