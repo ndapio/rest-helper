@@ -29,8 +29,12 @@ Example:
                 "headers" => array(
                     "Header 1" => "Value 1"
                 ),
-                "data_type" => "json:json", // value: json:json, form:json, form:xml
+                "data_type" => "json:json", // format: input:output of REST API
                 // default if not defined: json:json
+		// json:json => REST API endpoint gets json and returns json
+		// form:json => REST API endpont gets form params (like HTTP Form post) and returns json
+		// json:xml => REST API endpoint gets json and returns xml
+		// form:xml => REST API endpont gets form params (like HTTP Form post) and returns xml
             );
             return $this->doGET($args); // doPOST, doPUT, doDELETE
 	    }
