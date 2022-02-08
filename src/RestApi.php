@@ -6,6 +6,9 @@ class RestApi {
 
     protected string $base_url;
     protected string $proxy_line;
+    protected string $token;
+    protected string $username;
+    protected string $password;
     protected RequestService $service;
 
     public function __construct($base_url) {
@@ -14,9 +17,26 @@ class RestApi {
         $this->proxy_line = "";
     }
 
-    public function addProxy($proxy_string) {
-        $this->proxy_line = $proxy_string;
+    public function addProxy($proxy_line) {
+        $this->proxy_line = $proxy_line;
     }
+	
+	public function headerAuthBasic($username = "", $password = "") {
+		if ($username != "") {
+			$this->username = $username;
+		}
+		if ($password != "") {
+			$this->password = $password;
+		}
+		return "Basic: ".$this->username.":".$this->password;
+	}
+	
+	public function headerAuthBearer($token = "") {
+		if ($token != "") {
+			$this->token = $token;
+		}
+		return "Bearer: ".$this->token;
+	}
 
     public function init($args = array()): array {
         $data = array();
@@ -56,8 +76,6 @@ class RestApi {
         }
         return $data;
     }
-
-
 
     public function doGET($args = array()) {
         $data = $this->init($args);
