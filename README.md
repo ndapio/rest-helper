@@ -15,7 +15,7 @@ You can extend the RestApi class to use in your project.
 Example: 
 
     <?php
-    use NDAP\RestHelper\RestApi;
+    use NDAPio\RestHelper\RestApi;
     class SampleRestful extends RestApi {
         public function __construct($base_url = "https://sample.com") {
             $this->base_url = $base_url;
