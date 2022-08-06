@@ -1,4 +1,5 @@
 <?php
+
 namespace NDAPio\RestHelper;
 
 use GuzzleHttp\Client;
@@ -34,46 +35,46 @@ class RequestService {
                     $response_data_parsed = simplexml_load_string($response_data);
                 }
                 if ($output == "xmlarray") {
-                    $response_data_parsed = json_decode(json_encode((array) simplexml_load_string($response_data)), true);
+                    $response_data_parsed = json_decode(json_encode((array)simplexml_load_string($response_data)), true);
                 }
                 $code = $this->response->getStatusCode();
-                if ($code >= 200 && $code <= 299) {
-                    $cookie_line = $this->response->getHeaderLine('set-cookie');
-                    $cookie_line = str_replace("expires=Sun,", "expires=Sun", $cookie_line);
-                    $cookie_line = str_replace("expires=Sat,", "expires=Sat", $cookie_line);
-                    $cookie_line = str_replace("expires=Fri,", "expires=Fri", $cookie_line);
-                    $cookie_line = str_replace("expires=Thu,", "expires=Thu", $cookie_line);
-                    $cookie_line = str_replace("expires=Wed,", "expires=Wed", $cookie_line);
-                    $cookie_line = str_replace("expires=Tue,", "expires=Tue", $cookie_line);
-                    $cookie_line = str_replace("expires=Mon,", "expires=Mon", $cookie_line);
-                    $cookies_temp = explode(',', $cookie_line);
-                    $cookies = array();
-                    $cookies_ignore = array(
-                        "expires", "domain", "path", "max-age", "samesite"
-                    );
-                    foreach ($cookies_temp as $temp) {
-                        $temp_parts = explode(";", trim($temp));
-                        foreach ($temp_parts as $part) {
-                            $part_parts = explode("=", trim($part));
-                            if (count($part_parts) == 2) {
-                                $key = trim($part_parts[0]);
-                                if (!in_array(strtolower($key), $cookies_ignore)) {
-                                    $cookies[$key] = trim($part_parts[1]);
+                $cookie_line = $this->response->getHeaderLine('set-cookie');
+                $cookie_line = str_replace("expires=Sun,", "expires=Sun", $cookie_line);
+                $cookie_line = str_replace("expires=Sat,", "expires=Sat", $cookie_line);
+                $cookie_line = str_replace("expires=Fri,", "expires=Fri", $cookie_line);
+                $cookie_line = str_replace("expires=Thu,", "expires=Thu", $cookie_line);
+                $cookie_line = str_replace("expires=Wed,", "expires=Wed", $cookie_line);
+                $cookie_line = str_replace("expires=Tue,", "expires=Tue", $cookie_line);
+                $cookie_line = str_replace("expires=Mon,", "expires=Mon", $cookie_line);
+                $cookies_temp = explode(',', $cookie_line);
+                $cookies = array();
+                $cookies_ignore = array(
+                    "expires", "domain", "path", "max-age", "samesite"
+                );
+                foreach ($cookies_temp as $temp) {
+                    $temp_parts = explode(";", trim($temp));
+                    foreach ($temp_parts as $part) {
+                        $part_parts = explode("=", trim($part));
+                        if (count($part_parts) == 2) {
+                            $key = trim($part_parts[0]);
+                            if (!in_array(strtolower($key), $cookies_ignore)) {
+                                $cookies[$key] = trim($part_parts[1]);
+                            }
+                        } else {
+                            if (count($part_parts) > 2) {
+                                if (count($part_parts) == 3) {
+                                    $key = trim($part_parts[0]);
+                                    $cookies[$key] = trim($part_parts[1]) . "=" . trim($part_parts[2]);
                                 }
-                            } else {
-                                if (count($part_parts) > 2) {
-                                    if (count($part_parts) == 3) {
-                                        $key = trim($part_parts[0]);
-                                        $cookies[$key] = trim($part_parts[1])."=".trim($part_parts[2]);
-                                    }
-                                    if (count($part_parts) == 4) {
-                                        $key = trim($part_parts[0]);
-                                        $cookies[$key] = trim($part_parts[1])."==".trim($part_parts[3]);
-                                    }
+                                if (count($part_parts) == 4) {
+                                    $key = trim($part_parts[0]);
+                                    $cookies[$key] = trim($part_parts[1]) . "==" . trim($part_parts[3]);
                                 }
                             }
                         }
                     }
+                }
+                if ($code >= 200 && $code <= 299) {
                     $response = array(
                         "status" => "success",
                         "time" => time(),
@@ -85,7 +86,8 @@ class RequestService {
                     $response = array(
                         "status" => "error",
                         "time" => time(),
-                        "code" => $code
+                        "code" => $code,
+                        "cookies" => $cookies
                     );
                 }
             }
@@ -152,14 +154,14 @@ class RequestService {
     public function send($method, $url, $response_type, $data_type, $headers = [], $params = [], $proxy_line = "") {
         if ($method == "GET") {
             $query_string = http_build_query($params);
-            $url = $url."?".$query_string;
+            $url = $url . "?" . $query_string;
         }
         try {
             $guzzle_options = $this->getGuzzleOptions($method, $data_type, $headers, $params, $proxy_line);
             $this->response = $this->client->request($method, $url, $guzzle_options);
             return $this->getResponse($response_type, $data_type);
         } catch (\Exception $e) {
-            $action = $method." ".$url;
+            $action = $method . " " . $url;
             return $this->handleException($action, $e, $headers, $params, $proxy_line);
         }
     }
