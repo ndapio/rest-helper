@@ -122,7 +122,7 @@ class RequestService {
         }
     }
 
-    public function getGuzzleOptions($method, $data_type, $headers = [], $params = [], $proxy_line = "") {
+    public function getGuzzleOptions($method, $data_type, $headers = [], $params = [], $proxy_line = "", $extra_options = array()) {
         $data_types = $this->getDataTypes($data_type);
         $input = $data_types["input"];
         $guzzle_options = array();
@@ -148,16 +148,19 @@ class RequestService {
 
         }
         $guzzle_options["headers"] = $headers;
+        foreach ($extra_options as $key => $value) {
+            $guzzle_options[$key] = $value;
+        }
         return $guzzle_options;
     }
 
-    public function send($method, $url, $response_type, $data_type, $headers = [], $params = [], $proxy_line = "") {
+    public function send($method, $url, $response_type, $data_type, $headers = [], $params = [], $proxy_line = "", $extra_options = array()) {
         if ($method == "GET") {
             $query_string = http_build_query($params);
             $url = $url . "?" . $query_string;
         }
         try {
-            $guzzle_options = $this->getGuzzleOptions($method, $data_type, $headers, $params, $proxy_line);
+            $guzzle_options = $this->getGuzzleOptions($method, $data_type, $headers, $params, $proxy_line, $extra_options);
             $this->response = $this->client->request($method, $url, $guzzle_options);
             return $this->getResponse($response_type, $data_type);
         } catch (\Exception $e) {
