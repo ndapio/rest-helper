@@ -20,7 +20,7 @@ class RestApi {
     public function addProxy($proxy_line) {
         $this->proxy_line = $proxy_line;
     }
-	
+
 	public function headerAuthBasic($username = "", $password = "") {
 		if ($username != "") {
 			$this->username = $username;
@@ -30,7 +30,7 @@ class RestApi {
 		}
 		return "Basic: ".$this->username.":".$this->password;
 	}
-	
+
 	public function headerAuthBearer($token = "") {
 		if ($token != "") {
 			$this->token = $token;
@@ -74,27 +74,32 @@ class RestApi {
                 $data["proxy"] = "";
             }
         }
+        if (isset($args["extra_options"])) {
+            $data["extra_options"] = $args["extra_options"];
+        } else {
+            $data["extra_options"] = array();
+        }
         return $data;
     }
 
     public function doGET($args = array()) {
         $data = $this->init($args);
-        return $this->service->send("GET", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"]);
+        return $this->service->send("GET", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"], $data["extra_options"]);
     }
 
     public function doPOST($args = array()) {
         $data = $this->init($args);
-        return $this->service->send("POST", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"]);
+        return $this->service->send("POST", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"], $data["extra_options"]);
     }
 
     public function doPUT($args = array()) {
         $data = $this->init($args);
-        return $this->service->send("PUT", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"]);
+        return $this->service->send("PUT", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"], $data["extra_options"]);
     }
 
     public function doDELETE($args = array()) {
         $data = $this->init($args);
-        return $this->service->send("DELETE", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"]);
+        return $this->service->send("DELETE", $data["url"], $data["response_type"], $data["data_type"], $data["headers"], $data["params"], $data["proxy"], $data["extra_options"]);
     }
 
 
